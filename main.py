@@ -1,16 +1,29 @@
-# This is a sample Python script.
+import os
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import requests
+
+BASE = 'https://cloud-api.yandex.net'
+with open(os.getcwd() + '/token.txt', 'r') as f:
+    TOKEN = f.readlines()[0]
+PATH = '/free/trial'
+
+def href_create(add='/v1/disk/resources'):
+    res = BASE + add
+    return res
+
+def headers_create(token=TOKEN):
+    res = {
+    'Authorization': f'OAuth {token}',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+}
+    return res
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+def dir_create_YaDisk(path=PATH):
+    resp = requests.put(href_create(),
+                        headers=headers_create(),
+                        params={
+                            'path': path
+                        })
+    return resp
